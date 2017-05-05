@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Success</title>
+  </head>
+  <body>
+    <a href="/logout">Logout</a>
+    <br>
+    <br>
+    <style>
+    label{
+      display: block;
+      margin-bottom: 5px;
+    }
+    form{
+      padding: 10px;
+      display: inline-block;
+      vertical-align: top;
+      outline: solid hotpink;
+    }
+    </style>
+
+    <h1>Welcome, {{request.session.user_fname}}!</h1>
+    {% if messages %}
+	<ul class="messages">
+	    {% for message in messages %}
+		    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	    {% endfor %}
+	</ul>
+    {% endif %}
+
+    <form action="/add_quote" method="POST">
+      {% csrf_token %}
+      <h3>Contribute A Quote:</h3>
+        <label for="quotedby">Quoted By:
+          <input type="text" name="quotedby" value="">
+        </label>
+        <label for="Message">Message:
+          <input type="text" name="message" value="">
+        </label>
+        <input type="submit" name="" value="POST">
+    </form>
+    <fieldset>
+      <h3>Quotable Quotes</h3>
+    {% for quote in myQuotes %}
+        <p>{{quote.f_name}}</p>
+        <p>{{quote.quotedby}}</p>
+        <p>{{quote.content}}</p>
+        <form action="/destroy_quote/{{quote.id}}" method="POST">
+          {% csrf_token %}
+          <a href="/users/{{quote.user.id}}">Posted By {{quote.user.f_name}}</a>
+        </form>
+        <form action="/favs/{{quote.id}}" method="POST">
+          {% csrf_token %}
+          <input type="submit" value="Add To My List">
+        </form>
+    {% endfor %}
+  </fieldset>
+
+    <h2>Your Favorites</h2>
+    {% for quote in myFavs %}
+      <p>{{quote.f_name}}</p>
+      <p>{{quote.quotedby}}</p>
+      <p>{{quote.content}}</p>
+      <form action="/destroy_quote/{{quote.id}}" method="POST">
+        {% csrf_token %}
+        <a href="/users/{{quote.user.id}}">Posted By {{quote.user.f_name}}</a>
+      </form>
+      <form action="/destroy_quote/{{quote.id}}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Remove From My List">
+      </form>
+    {% endfor %}
+  </body>
+</html>

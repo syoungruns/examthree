@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login/Registration</title>
+  </head>
+  <body>
+  <style>
+  label{
+    display: block;
+    margin-bottom: 5px;
+  }
+  form{
+    border: 1px dotted hotpink;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  </style>
+  {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+  {% endif %}
+
+  <form action="/register" method="POST">
+      <h1>Registration</h1>
+        {% csrf_token %}
+          <label for="f_name">First Name:
+            <input type="text" name="f_name">
+          </label>
+        <br>
+          <label for="u_name">Username:
+            <input type="text" name="u_name">
+          </label>
+        <br>
+        <label for="e_mail">Email:
+          <input type="text" name="e_mail">
+        </label>
+        <br>
+          <label for="pw">Password:
+            <input type="password" name="pw">
+          </label>
+        <br>
+          <label for="confirmpw">Confirm Password:
+            <input type="password" name="confirmpw">
+          </label>
+        <br>
+          <label for="dob">Date of Birth:
+            <input type="date" name="dob">
+          </label>
+            <button>Register!</button>
+        </form>
+      <form action="/login" method="POST">
+            <h1>Login</h1>
+      {% csrf_token %}
+        <label for="email">Email:
+          <input type="email" name="email">
+        </label>
+      <br>
+        <label for="password">Password:
+          <input type="password" name="password">
+        </label>
+          <button>Login</button>
+      </form>
+  </body>
+</html>
